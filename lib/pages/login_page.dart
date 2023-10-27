@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:together_chat_app/auth/auth_service.dart';
 
-import '../my_button.dart';
-import '../square_tile.dart';
-import '../text_field.dart';
+import '../components/my_button.dart';
+import '../components/square_tile.dart';
+import '../components/text_field.dart';
 
 class LogInPage extends StatefulWidget {
   final void Function()? onTap;
