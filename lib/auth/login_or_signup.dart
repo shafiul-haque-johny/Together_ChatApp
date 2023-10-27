@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:together_chat_app/login_page.dart';
-import 'package:together_chat_app/signup_page.dart';
+import 'package:together_chat_app/pages/login_page.dart';
+import 'package:together_chat_app/pages/signup_page.dart';
 
 class LoginOrSignup extends StatefulWidget {
   const LoginOrSignup({Key? key}) : super(key: key);

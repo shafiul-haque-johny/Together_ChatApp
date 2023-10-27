@@ -1,21 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_icon/gradient_icon.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:together_chat_app/auth/auth_service.dart';
 
-import 'signin_button.dart';
-import 'square_tile.dart';
-import 'text_field.dart';
+import '../my_button.dart';
+import '../square_tile.dart';
+import '../text_field.dart';
 
-class LogInPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
   final void Function()? onTap;
 
-  LogInPage({super.key, this.onTap});
+  const SignUpPage({super.key, this.onTap});
 
-  final usernameController = TextEditingController();
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
-  // sign user in method
-  signUserIn() {}
+  final confirmPasswordController = TextEditingController();
+
+  // sign user up method
+  void signUserUp() async {
+    if (passwordController.text != confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Passwords does not match!'),
+        ),
+      );
+      return;
+    }
+
+    //get auth service
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      await authService.signUpWithEmailPassword(
+        emailController.text,
+        passwordController.text,
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            error.toString(),
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +64,7 @@ class LogInPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
                 // logo
                 const GradientIcon(
                   icon: Icons.people_alt,
@@ -35,7 +72,6 @@ class LogInPage extends StatelessWidget {
                       colors: [Colors.purple, Colors.green, Colors.blue]),
                   size: 100,
                 ),
-
                 const SizedBox(height: 10),
 
                 GradientText(
@@ -53,7 +89,7 @@ class LogInPage extends StatelessWidget {
                 const SizedBox(height: 10),
 
                 GradientText(
-                  'Welcome back to your account!',
+                  'Create your account',
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
@@ -68,7 +104,7 @@ class LogInPage extends StatelessWidget {
 
                 //email text field
                 MyTextField(
-                  myController: usernameController,
+                  myController: emailController,
                   hintText: 'Email',
                   obscureText: false,
                 ),
@@ -78,6 +114,14 @@ class LogInPage extends StatelessWidget {
                 MyTextField(
                   myController: passwordController,
                   hintText: 'Password',
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20),
+
+                //confirm password text field
+                MyTextField(
+                  myController: confirmPasswordController,
+                  hintText: 'Confirm Password',
                   obscureText: true,
                 ),
 
@@ -100,15 +144,15 @@ class LogInPage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
 
                 // sign in button
                 MyButton(
-                  onTap: () => signUserIn,
-                  text: 'Sign In',
+                  onTap: () => signUserUp,
+                  text: 'Sign Up',
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 25),
 
                 // or continue with
                 Padding(
@@ -143,7 +187,7 @@ class LogInPage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
 
                 //google + facebook + apple sign in buttons
                 const Row(
@@ -159,14 +203,14 @@ class LogInPage extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 90),
+                const SizedBox(height: 50),
 
                 // register
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GradientText(
-                      'Not a member? ',
+                      'Already a member? ',
                       colors: const [
                         Colors.indigo,
                         Color.fromARGB(255, 142, 151, 206),
@@ -175,9 +219,9 @@ class LogInPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     InkWell(
-                      onTap: onTap,
+                      onTap: widget.onTap,
                       child: GradientText(
-                        'Register now',
+                        'Login now',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -190,6 +234,7 @@ class LogInPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 30),
               ],
             ),
           ),

@@ -32,6 +32,26 @@
   <title>together_chat_app</title>
   <link rel="manifest" href="manifest.json">
 
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDRDTgPyKYq7ripFTpSNWrNs1my051EBoo",
+    authDomain: "together-45f70.firebaseapp.com",
+    projectId: "together-45f70",
+    storageBucket: "together-45f70.appspot.com",
+    messagingSenderId: "346024035717",
+    appId: "1:346024035717:web:e2c6680ba769c2e60ef0ec"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
+
   <script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;

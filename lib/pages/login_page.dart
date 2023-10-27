@@ -1,22 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_icon/gradient_icon.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:together_chat_app/auth/auth_service.dart';
 
-import 'signin_button.dart';
-import 'square_tile.dart';
-import 'text_field.dart';
+import '../my_button.dart';
+import '../square_tile.dart';
+import '../text_field.dart';
 
-class SignUpPage extends StatelessWidget {
+class LogInPage extends StatefulWidget {
   final void Function()? onTap;
 
-  SignUpPage({super.key, this.onTap});
+  const LogInPage({super.key, this.onTap});
 
-  final usernameController = TextEditingController();
+  @override
+  State<LogInPage> createState() => _LogInPageState();
+}
+
+class _LogInPageState extends State<LogInPage> {
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
 
-  // sign user up method
-  signUserUp() {}
+  // sign user in method
+  void signUserIn() async {
+    // get the auth service
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    try {
+      await authService.signInWithEmailPassword(
+        emailController.text,
+        passwordController.text,
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            error.toString(),
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +53,7 @@ class SignUpPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 15),
+                const SizedBox(height: 25),
                 // logo
                 const GradientIcon(
                   icon: Icons.people_alt,
@@ -36,6 +61,7 @@ class SignUpPage extends StatelessWidget {
                       colors: [Colors.purple, Colors.green, Colors.blue]),
                   size: 100,
                 ),
+
                 const SizedBox(height: 10),
 
                 GradientText(
@@ -53,7 +79,7 @@ class SignUpPage extends StatelessWidget {
                 const SizedBox(height: 10),
 
                 GradientText(
-                  'Create your account',
+                  'Welcome back to your account!',
                   style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
@@ -68,7 +94,7 @@ class SignUpPage extends StatelessWidget {
 
                 //email text field
                 MyTextField(
-                  myController: usernameController,
+                  myController: emailController,
                   hintText: 'Email',
                   obscureText: false,
                 ),
@@ -78,14 +104,6 @@ class SignUpPage extends StatelessWidget {
                 MyTextField(
                   myController: passwordController,
                   hintText: 'Password',
-                  obscureText: true,
-                ),
-                const SizedBox(height: 20),
-
-                //confirm password text field
-                MyTextField(
-                  myController: confirmPasswordController,
-                  hintText: 'Confirm Password',
                   obscureText: true,
                 ),
 
@@ -108,15 +126,15 @@ class SignUpPage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
 
                 // sign in button
                 MyButton(
-                  onTap: () => signUserUp,
-                  text: 'Sign Up',
+                  onTap: () => signUserIn,
+                  text: 'Sign In',
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 30),
 
                 // or continue with
                 Padding(
@@ -151,7 +169,7 @@ class SignUpPage extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 15),
+                const SizedBox(height: 20),
 
                 //google + facebook + apple sign in buttons
                 const Row(
@@ -167,14 +185,14 @@ class SignUpPage extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 50),
+                const SizedBox(height: 90),
 
                 // register
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GradientText(
-                      'Already a member? ',
+                      'Not a member? ',
                       colors: const [
                         Colors.indigo,
                         Color.fromARGB(255, 142, 151, 206),
@@ -183,9 +201,9 @@ class SignUpPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     InkWell(
-                      onTap: onTap,
+                      onTap: widget.onTap,
                       child: GradientText(
-                        'Login now',
+                        'Register now',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
@@ -198,6 +216,7 @@ class SignUpPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                const SizedBox(height: 30),
               ],
             ),
           ),
